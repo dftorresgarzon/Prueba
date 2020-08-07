@@ -1,0 +1,385 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TiendaRealModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Barrio">
+    <Key>
+      <PropertyRef Name="IdBarrio" />
+    </Key>
+    <Property Name="IdBarrio" Type="Decimal" Precision="4" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdCiudad" Type="Decimal" Precision="2" Scale="0" Nullable="false" />
+    <Property Name="NombreBarrio" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Ciudad" Relationship="Self.FK_Barrio_Ciudad" FromRole="Barrio" ToRole="Ciudad" />
+    <NavigationProperty Name="Sucursal" Relationship="Self.FK_Sucursal_Barrio" FromRole="Barrio" ToRole="Sucursal" />
+  </EntityType>
+  <EntityType Name="Ciudad">
+    <Key>
+      <PropertyRef Name="IdCiudad" />
+    </Key>
+    <Property Name="IdCiudad" Type="Decimal" Precision="2" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreCiudad" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Barrio" Relationship="Self.FK_Barrio_Ciudad" FromRole="Ciudad" ToRole="Barrio" />
+  </EntityType>
+  <EntityType Name="DepartamentosProductos">
+    <Key>
+      <PropertyRef Name="IdDepartamento" />
+    </Key>
+    <Property Name="IdDepartamento" Type="Decimal" Precision="2" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreDepartamento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="SubdepartamentosProductos" Relationship="Self.FK_SubdepartamentosProductos_DepartamentosProductos" FromRole="DepartamentosProductos" ToRole="SubdepartamentosProductos" />
+  </EntityType>
+  <EntityType Name="Empaque">
+    <Key>
+      <PropertyRef Name="IdTipoEmpaque" />
+    </Key>
+    <Property Name="IdTipoEmpaque" Type="Decimal" Precision="3" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Material" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Forma" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_Empaque" FromRole="Empaque" ToRole="Producto" />
+  </EntityType>
+  <EntityType Name="Fabricante">
+    <Key>
+      <PropertyRef Name="IdFabricante" />
+    </Key>
+    <Property Name="IdFabricante" Type="Decimal" Precision="4" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreFabricante" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UrlWeb" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UrlImagen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_Fabricante" FromRole="Fabricante" ToRole="Producto" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="IdProducto" />
+    </Key>
+    <Property Name="IdProducto" Type="Decimal" Precision="5" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdTipoEmpaque" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
+    <Property Name="IdFabricante" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+    <Property Name="IdSubdepartamento" Type="Decimal" Precision="2" Scale="0" />
+    <Property Name="NombreProducto" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TamanioCm3" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+    <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Caracteristicas" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UrlImagen" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Empaque" Relationship="Self.FK_Producto_Empaque" FromRole="Producto" ToRole="Empaque" />
+    <NavigationProperty Name="Fabricante" Relationship="Self.FK_Producto_Fabricante" FromRole="Producto" ToRole="Fabricante" />
+    <NavigationProperty Name="SubdepartamentosProductos" Relationship="Self.FK_Producto_SubdepartamentosProductos" FromRole="Producto" ToRole="SubdepartamentosProductos" />
+    <NavigationProperty Name="RegistroAlmacen" Relationship="Self.FK_RegistroAlmacen_Producto" FromRole="Producto" ToRole="RegistroAlmacen" />
+  </EntityType>
+  <EntityType Name="RegistroAlmacen">
+    <Key>
+      <PropertyRef Name="IdRegistro" />
+    </Key>
+    <Property Name="IdRegistro" Type="Decimal" Precision="5" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdSucursal" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+    <Property Name="IdProducto" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
+    <Property Name="Cantidad" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK_RegistroAlmacen_Producto" FromRole="RegistroAlmacen" ToRole="Producto" />
+    <NavigationProperty Name="Sucursal" Relationship="Self.FK_RegistroAlmacen_Sucursal" FromRole="RegistroAlmacen" ToRole="Sucursal" />
+  </EntityType>
+  <EntityType Name="SubdepartamentosProductos">
+    <Key>
+      <PropertyRef Name="IdSubdepartamento" />
+    </Key>
+    <Property Name="IdSubdepartamento" Type="Decimal" Precision="2" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdDepartamento" Type="Decimal" Precision="2" Scale="0" />
+    <Property Name="NombreSubdepartamento" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="DepartamentosProductos" Relationship="Self.FK_SubdepartamentosProductos_DepartamentosProductos" FromRole="SubdepartamentosProductos" ToRole="DepartamentosProductos" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK_Producto_SubdepartamentosProductos" FromRole="SubdepartamentosProductos" ToRole="Producto" />
+  </EntityType>
+  <EntityType Name="Sucursal">
+    <Key>
+      <PropertyRef Name="IdSucursal" />
+    </Key>
+    <Property Name="IdSucursal" Type="Decimal" Precision="4" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdBarrio" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+    <Property Name="NombreSucursal" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Direccion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Telefono" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Barrio" Relationship="Self.FK_Sucursal_Barrio" FromRole="Sucursal" ToRole="Barrio" />
+    <NavigationProperty Name="RegistroAlmacen" Relationship="Self.FK_RegistroAlmacen_Sucursal" FromRole="Sucursal" ToRole="RegistroAlmacen" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_Barrio_Ciudad">
+    <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="1" />
+    <End Role="Barrio" Type="Self.Barrio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ciudad">
+        <PropertyRef Name="IdCiudad" />
+      </Principal>
+      <Dependent Role="Barrio">
+        <PropertyRef Name="IdCiudad" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sucursal_Barrio">
+    <End Role="Barrio" Type="Self.Barrio" Multiplicity="1" />
+    <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Barrio">
+        <PropertyRef Name="IdBarrio" />
+      </Principal>
+      <Dependent Role="Sucursal">
+        <PropertyRef Name="IdBarrio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubdepartamentosProductos_DepartamentosProductos">
+    <End Role="DepartamentosProductos" Type="Self.DepartamentosProductos" Multiplicity="0..1" />
+    <End Role="SubdepartamentosProductos" Type="Self.SubdepartamentosProductos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DepartamentosProductos">
+        <PropertyRef Name="IdDepartamento" />
+      </Principal>
+      <Dependent Role="SubdepartamentosProductos">
+        <PropertyRef Name="IdDepartamento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_Empaque">
+    <End Role="Empaque" Type="Self.Empaque" Multiplicity="1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empaque">
+        <PropertyRef Name="IdTipoEmpaque" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdTipoEmpaque" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_Fabricante">
+    <End Role="Fabricante" Type="Self.Fabricante" Multiplicity="1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fabricante">
+        <PropertyRef Name="IdFabricante" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdFabricante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_SubdepartamentosProductos">
+    <End Role="SubdepartamentosProductos" Type="Self.SubdepartamentosProductos" Multiplicity="0..1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubdepartamentosProductos">
+        <PropertyRef Name="IdSubdepartamento" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdSubdepartamento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RegistroAlmacen_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+    <End Role="RegistroAlmacen" Type="Self.RegistroAlmacen" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="IdProducto" />
+      </Principal>
+      <Dependent Role="RegistroAlmacen">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RegistroAlmacen_Sucursal">
+    <End Role="Sucursal" Type="Self.Sucursal" Multiplicity="1" />
+    <End Role="RegistroAlmacen" Type="Self.RegistroAlmacen" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sucursal">
+        <PropertyRef Name="IdSucursal" />
+      </Principal>
+      <Dependent Role="RegistroAlmacen">
+        <PropertyRef Name="IdSucursal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TiendaRealEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Barrio" EntityType="Self.Barrio" />
+    <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+    <EntitySet Name="DepartamentosProductos" EntityType="Self.DepartamentosProductos" />
+    <EntitySet Name="Empaque" EntityType="Self.Empaque" />
+    <EntitySet Name="Fabricante" EntityType="Self.Fabricante" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" />
+    <EntitySet Name="RegistroAlmacen" EntityType="Self.RegistroAlmacen" />
+    <EntitySet Name="SubdepartamentosProductos" EntityType="Self.SubdepartamentosProductos" />
+    <EntitySet Name="Sucursal" EntityType="Self.Sucursal" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_Barrio_Ciudad" Association="Self.FK_Barrio_Ciudad">
+      <End Role="Ciudad" EntitySet="Ciudad" />
+      <End Role="Barrio" EntitySet="Barrio" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sucursal_Barrio" Association="Self.FK_Sucursal_Barrio">
+      <End Role="Barrio" EntitySet="Barrio" />
+      <End Role="Sucursal" EntitySet="Sucursal" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubdepartamentosProductos_DepartamentosProductos" Association="Self.FK_SubdepartamentosProductos_DepartamentosProductos">
+      <End Role="DepartamentosProductos" EntitySet="DepartamentosProductos" />
+      <End Role="SubdepartamentosProductos" EntitySet="SubdepartamentosProductos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_Empaque" Association="Self.FK_Producto_Empaque">
+      <End Role="Empaque" EntitySet="Empaque" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_Fabricante" Association="Self.FK_Producto_Fabricante">
+      <End Role="Fabricante" EntitySet="Fabricante" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_SubdepartamentosProductos" Association="Self.FK_Producto_SubdepartamentosProductos">
+      <End Role="SubdepartamentosProductos" EntitySet="SubdepartamentosProductos" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegistroAlmacen_Producto" Association="Self.FK_RegistroAlmacen_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="RegistroAlmacen" EntitySet="RegistroAlmacen" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegistroAlmacen_Sucursal" Association="Self.FK_RegistroAlmacen_Sucursal">
+      <End Role="Sucursal" EntitySet="Sucursal" />
+      <End Role="RegistroAlmacen" EntitySet="RegistroAlmacen" />
+    </AssociationSet>
+    <FunctionImport Name="ConsultarPorIdProducto" ReturnType="Collection(TiendaRealModel.ConsultarPorIdProducto_Result)">
+      <Parameter Name="IdProducto" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="ConsultarPorIdRegistroAlmacen" ReturnType="Collection(TiendaRealModel.ConsultarPorIdRegistroAlmacen_Result)">
+      <Parameter Name="IdRegistro" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="ConsultarTodasSucursales" ReturnType="Collection(TiendaRealModel.ConsultarTodasSucursales_Result)" />
+    <FunctionImport Name="ConsultarTodosDepartamentos" ReturnType="Collection(TiendaRealModel.ConsultarTodosDepartamentos_Result)" />
+    <FunctionImport Name="ConsultarTodosProductos" ReturnType="Collection(TiendaRealModel.ConsultarTodosProductos_Result)" />
+    <FunctionImport Name="ConsultarTodosRegistrosAlmacen" ReturnType="Collection(TiendaRealModel.ConsultarTodosRegistrosAlmacen_Result)" />
+    <FunctionImport Name="EliminarRegistroAlmacen">
+      <Parameter Name="IdRegistro" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="GuardarRegistroAlmacen">
+      <Parameter Name="IdSucursal" Mode="In" Type="Decimal" />
+      <Parameter Name="IdProducto" Mode="In" Type="Decimal" />
+      <Parameter Name="Cantidad" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="ModificarRegistroAlmacen">
+      <Parameter Name="IdRegistro" Mode="In" Type="Decimal" />
+      <Parameter Name="IdSucursal" Mode="In" Type="Decimal" />
+      <Parameter Name="IdProducto" Mode="In" Type="Decimal" />
+      <Parameter Name="Cantidad" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TiendaRealModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TiendaRealModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="EliminarProducto">
+      <Parameter Name="IdProducto" Mode="In" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="GuardarProducto">
+      <Parameter Name="IdTipoEmpaque" Mode="In" Type="Decimal" />
+      <Parameter Name="IdFabricante" Mode="In" Type="Decimal" />
+      <Parameter Name="IdSubdepartamento" Mode="In" Type="Decimal" />
+      <Parameter Name="NombreProducto" Mode="In" Type="String" />
+      <Parameter Name="TamanioCm3" Mode="In" Type="Decimal" />
+      <Parameter Name="Precio" Mode="In" Type="Decimal" />
+      <Parameter Name="Caracteristicas" Mode="In" Type="String" />
+      <Parameter Name="UrlImagen" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ModificarProducto">
+      <Parameter Name="IdProducto" Mode="In" Type="Decimal" />
+      <Parameter Name="IdTipoEmpaque" Mode="In" Type="Decimal" />
+      <Parameter Name="IdFabricante" Mode="In" Type="Decimal" />
+      <Parameter Name="IdSubdepartamento" Mode="In" Type="Decimal" />
+      <Parameter Name="NombreProducto" Mode="In" Type="String" />
+      <Parameter Name="TamanioCm3" Mode="In" Type="Decimal" />
+      <Parameter Name="Precio" Mode="In" Type="Decimal" />
+      <Parameter Name="Caracteristicas" Mode="In" Type="String" />
+      <Parameter Name="UrlImagen" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="ConsultarPorIdProducto_Result">
+    <Property Type="Decimal" Name="IdProducto" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreFabricante" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="Forma" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="NombreProducto" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="TamanioCm3" Nullable="false" Precision="4" Scale="0" />
+    <Property Type="Decimal" Name="Precio" Nullable="false" Precision="19" />
+    <Property Type="Decimal" Name="IdSubdepartamento" Nullable="true" Precision="2" Scale="0" />
+    <Property Type="String" Name="UrlImagen" Nullable="false" MaxLength="60" />
+  </ComplexType>
+  <ComplexType Name="ConsultarPorIdRegistroAlmacen_Result">
+    <Property Type="Decimal" Name="IdRegistro" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreSucursal" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="IdProducto" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreProducto" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="Cantidad" Nullable="false" Precision="3" Scale="0" />
+  </ComplexType>
+  <ComplexType Name="ConsultarTodasSucursales_Result">
+    <Property Type="Decimal" Name="IdSucursal" Nullable="false" Precision="4" Scale="0" />
+    <Property Type="Decimal" Name="IdBarrio" Nullable="false" Precision="4" Scale="0" />
+    <Property Type="String" Name="NombreSucursal" Nullable="false" MaxLength="25" />
+    <Property Type="String" Name="Direccion" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="Telefono" Nullable="false" MaxLength="40" />
+  </ComplexType>
+  <ComplexType Name="ConsultarTodosDepartamentos_Result">
+    <Property Type="Decimal" Name="IdDepartamento" Nullable="false" Precision="2" Scale="0" />
+    <Property Type="String" Name="NombreDepartamento" Nullable="true" MaxLength="30" />
+    <Property Type="Decimal" Name="IdSubdepartamento" Nullable="false" Precision="2" Scale="0" />
+    <Property Type="String" Name="NombreSubdepartamento" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="ConsultarTodosProductos_Result">
+    <Property Type="Decimal" Name="IdProducto" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreFabricante" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="Forma" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="NombreProducto" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="TamanioCm3" Nullable="false" Precision="4" Scale="0" />
+    <Property Type="Decimal" Name="Precio" Nullable="false" Precision="19" />
+    <Property Type="Decimal" Name="IdSubdepartamento" Nullable="true" Precision="2" Scale="0" />
+    <Property Type="String" Name="UrlImagen" Nullable="false" MaxLength="60" />
+  </ComplexType>
+  <ComplexType Name="ConsultarTodosRegistrosAlmacen_Result">
+    <Property Type="Decimal" Name="IdRegistro" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreSucursal" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="IdProducto" Nullable="false" Precision="5" Scale="0" />
+    <Property Type="String" Name="NombreProducto" Nullable="false" MaxLength="25" />
+    <Property Type="Decimal" Name="Cantidad" Nullable="false" Precision="3" Scale="0" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>
